@@ -13,7 +13,7 @@ getBooks()
  .then(books => {
    booksList = {...books};
    var booksForLeftBlock = getBooksForLeftBlock(books);
-   var booksForRightBlock = getBooksFromLS().mass;
+   var booksForRightBlock = getBooksFromLS();
    renderBooks(leftBlock, leftItem, booksForLeftBlock);
    renderBooks(rightBlock, rightItem, booksForRightBlock);
  })
@@ -22,7 +22,7 @@ getBooks()
 
 //---------------------------------- functions----------------------------------
 function getBooksForLeftBlock(books) {
-  var likedBooks = getBooksFromLS().mass;
+  var likedBooks = getBooksFromLS();
   for(let i in books) {
     for(let j in likedBooks) {
       if(JSON.stringify(books[i]) === JSON.stringify(likedBooks[j])){
@@ -45,7 +45,7 @@ function clearLists(...listsArrey) {
 
 function writeBookToLS(book) {
   var books = getBooksFromLS();
-  books.mass.push(book);
+  books.push(book);
   localStorage.setItem("likedBooks", JSON.stringify(books));
 }
 
@@ -58,9 +58,9 @@ function searchBook(list, bookName) {
 
 function removeBookFromLS(book) {
   var books = getBooksFromLS();
-  for(let i in books.mass){
-    if(JSON.stringify(books.mass[i]) === JSON.stringify(book)) {
-      books.mass.splice(i, 1);
+  for(let i in books){
+    if(JSON.stringify(books[i]) === JSON.stringify(book)) {
+      books.splice(i, 1);
       break;
     }
   }
@@ -70,7 +70,7 @@ function removeBookFromLS(book) {
 function getBooksFromLS() {
   if(localStorage["likedBooks"])
   return JSON.parse(localStorage.getItem("likedBooks"));
-  return {mass:[]};
+  return [];
 }
 
 async function getBooks(){
@@ -108,7 +108,6 @@ function addBook(block, book, elementType) {
   element.querySelectorAll('span')[1].childNodes[2].remove();
   element.querySelectorAll('span')[2].appendChild(document.createTextNode(book.author));
   element.querySelectorAll('span')[1].appendChild(document.createTextNode(book.name));
-
   element.querySelector(".after, .before").addEventListener("click",moveToNeighborBlock);
   block.appendChild(element);
 };
