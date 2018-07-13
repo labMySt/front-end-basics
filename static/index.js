@@ -7,6 +7,7 @@ var booksList = {};
 clearLists(leftBlock, rightBlock);
 addFilterListener();
 
+
 getBooks()
  .then(books => {
    booksList = {...books};
@@ -14,11 +15,24 @@ getBooks()
    var booksForRightBlock = getBooksFromLS();
    renderBooks(leftBlock, leftItem, booksForLeftBlock);
    renderBooks(rightBlock, rightItem, booksForRightBlock);
+   addCounter();
  })
  .catch(err => console.log(err));
 
 
 //---------------------------------- functions----------------------------------
+function addCounter() {
+  craateCounter(leftBlock, "Total");
+  craateCounter(rightBlock, "Favorite");
+}
+
+function craateCounter(block, str) {
+  var total = document.createElement("span");
+  total.style.margin = "20px";
+  total.innerHTML = str + ": <span class = '"+str+"'>"+block.children.length+"</span>";
+  document.querySelector('.content').childNodes[1].appendChild(total);
+}
+
 function addFilterListener() {
   document.querySelector('input').addEventListener('keyup', filter);
 }
@@ -35,6 +49,7 @@ function filter(e) {
     }
   })
 }
+
 function getBooksForLeftBlock(books) {
   var likedBooks = getBooksFromLS();
   for(let i in books) {
@@ -113,6 +128,12 @@ function moveToNeighborBlock(e){
     removeBookFromLS(book);
   }
   e.target.parentNode.remove();
+  updateCounter();
+}
+
+function updateCounter() {
+  document.querySelector(".Total").innerText = leftBlock.children.length;
+  document.querySelector(".Favorite").innerText = rightBlock.children.length;
 }
 
 function addBook(block, book, elementType) {
