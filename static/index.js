@@ -4,10 +4,8 @@ const leftItem = leftBlock.children[0];
 const rightItem = rightBlock.children[0];
 var booksList = {};
 //-----------------------------------algorithm----------------------------------
-
 clearLists(leftBlock, rightBlock);
-
-
+addFilterListener();
 
 getBooks()
  .then(books => {
@@ -21,6 +19,22 @@ getBooks()
 
 
 //---------------------------------- functions----------------------------------
+function addFilterListener() {
+  document.querySelector('input').addEventListener('keyup', filter);
+}
+
+function filter(e) {
+  var key = e.target.value.toLowerCase();
+  console.log(key, e.target.value );
+  leftBlock.childNodes.forEach(function(bookBlock) {
+    let author = bookBlock.querySelectorAll('span')[2].childNodes[2].data.toLowerCase();
+    if(author.indexOf(key) != -1) {
+      bookBlock.style.display = "flex";
+    } else {
+      bookBlock.style.display = "none";
+    }
+  })
+}
 function getBooksForLeftBlock(books) {
   var likedBooks = getBooksFromLS();
   for(let i in books) {
