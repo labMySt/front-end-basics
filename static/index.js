@@ -66,9 +66,7 @@ function getBooksForLeftBlock(books) {
 
 function clearLists(...listsArrey) {
   for(let i in listsArrey){
-    while (listsArrey[i].firstChild) {
-        listsArrey[i].removeChild(listsArrey[i].firstChild);
-    }
+     listsArrey[i].innerHTML = "";
   }
 };
 
