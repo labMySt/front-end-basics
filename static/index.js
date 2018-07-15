@@ -22,15 +22,20 @@ getBooks()
 
 //---------------------------------- functions----------------------------------
 function addCounter() {
-  craateCounter(leftBlock, "Total");
-  craateCounter(rightBlock, "Favorite");
+  var content = document.querySelector(".content");
+  content.appendChild(craateCounter(leftBlock, "Total"));
+  content.appendChild(craateCounter(rightBlock, "Favorite"));
 }
 
-function craateCounter(block, str) {
-  var total = document.createElement("span");
-  total.style.margin = "20px";
-  total.innerHTML = str + ": <span class = '"+str+"'>"+block.children.length+"</span>";
-  document.querySelector('.content').childNodes[1].appendChild(total);
+function craateCounter(block, className) {
+  var vue = document.createElement("div");
+  var counter = document.createElement("div");
+  block.style.height = '600px';
+  vue.style.minWidth = "450px";
+  counter.innerHTML = `<b>Total: <span class = ${className}>${block.children.length}</b>`;
+  vue.appendChild(block);
+  vue.appendChild(counter);
+  return vue;
 }
 
 function addFilterListener() {
@@ -39,8 +44,12 @@ function addFilterListener() {
 
 function filter(e) {
   var key = e.target.value.toLowerCase();
-  console.log(key, e.target.value );
-  leftBlock.childNodes.forEach(function(bookBlock) {
+  hideItem(key, leftBlock);
+  hideItem(key, rightBlock);
+
+}
+function hideItem(key, block){
+  block.childNodes.forEach(function(bookBlock) {
     let author = bookBlock.querySelectorAll('span')[2].childNodes[2].data.toLowerCase();
     if(author.indexOf(key) != -1) {
       bookBlock.style.display = "flex";
